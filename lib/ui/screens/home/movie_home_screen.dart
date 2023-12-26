@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../config/constants/app_constants.dart';
+
 class MovieHomeScreen extends StatelessWidget {
   const MovieHomeScreen({super.key});
 
@@ -7,9 +9,9 @@ class MovieHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text('HomeMovieScreen'),
+        child: Text(AppConstants.theMovieKey),
       ),
     );
   }
