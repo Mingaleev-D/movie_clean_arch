@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_clean_arch/ui/providers/movies/movie_providers.dart';
-import 'package:movie_clean_arch/ui/widgets/widgets.dart';
+import 'package:gap/gap.dart';
+
+import '../../providers/providers.dart';
+import '../../widgets/widgets.dart';
 
 class MovieHomeScreen extends StatelessWidget {
   const MovieHomeScreen({super.key});
@@ -36,17 +38,8 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     return Column(
       children: [
         const AppCustomBar(),
-        Expanded(
-          child: ListView.builder(
-            itemCount: nowPlayingMovies.length,
-            itemBuilder: (context, index) {
-              final movie = nowPlayingMovies[index];
-              return ListTile(
-                title: Text(movie.title),
-              );
-            },
-          ),
-        ),
+        const Gap(10),
+        MovieSlideShow(movies: nowPlayingMovies),
       ],
     );
   }
