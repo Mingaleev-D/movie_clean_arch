@@ -13,7 +13,8 @@ class MovieDBDatasource extends MovieUseCase {
 
   @override
   Future<List<Movie>> getNowPlaying({int page = 1}) async {
-    final response = await dio.get('movie/now_playing');
+    final response =
+        await dio.get('movie/now_playing', queryParameters: {'page': page});
     final movieResponse = MovieResponse.fromJson(response.data);
     final List<Movie> movies = movieResponse.results
         .map((movie) => MovieMapper.movieResponseToMovieEntity(movie))
