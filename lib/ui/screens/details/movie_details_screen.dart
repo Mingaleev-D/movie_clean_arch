@@ -1,7 +1,9 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:movie_clean_arch/domain/entities/movie.dart';
+import 'package:movie_clean_arch/ui/providers/actors/actors_provider.dart';
 import 'package:movie_clean_arch/ui/providers/details/movie_details_provider.dart';
 
 class MovieDetailsScreen extends ConsumerStatefulWidget {
@@ -20,6 +22,7 @@ class MovieDetailsScreenState extends ConsumerState<MovieDetailsScreen> {
   void initState() {
     super.initState();
     ref.read(movieDetailProvider.notifier).loadMovie(widget.movieId);
+    ref.read(actorsByMovieProvider.notifier).loadActors(widget.movieId);
   }
 
   @override
@@ -27,21 +30,21 @@ class MovieDetailsScreenState extends ConsumerState<MovieDetailsScreen> {
     final movies = ref.watch(movieDetailProvider);
     final movie = movies[widget.movieId];
 
-    // if (movie != null) {
-    //   return const Scaffold(
-    //     body: Center(
-    //       child: CircularProgressIndicator(
-    //         strokeWidth: 2,
-    //       ),
-    //     ),
-    //   );
-    // }
+    if (movie == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
-          _CustomSliverAppBar(movie: movie!),
+          _CustomSliverAppBar(movie: movie),
           SliverList(
             delegate: SliverChildBuilderDelegate(
                 (context, index) => _MovieViewDetails(movie: movie),
@@ -67,15 +70,23 @@ class _CustomSliverAppBar extends StatelessWidget {
       foregroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        title: Text(
-          movie.title,
-          style: const TextStyle(fontSize: 20),
-          textAlign: TextAlign.start,
-        ),
+        //* возможно текст останется для отображения названия фильма
+        // title: Text(
+        //   movie.title,
+        //   style: const TextStyle(fontSize: 20),
+        //   textAlign: TextAlign.start,
+        // ),
         background: Stack(
           children: [
             SizedBox.expand(
-              child: Image.network(movie.posterPath, fit: BoxFit.cover),
+              child: Image.network(
+                movie.posterPath,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress != null) return const SizedBox();
+                  return FadeIn(child: child);
+                },
+              ),
             ),
             const SizedBox.expand(
               child: DecoratedBox(
@@ -109,7 +120,7 @@ class _CustomSliverAppBar extends StatelessWidget {
 }
 
 class _MovieViewDetails extends StatelessWidget {
-  const _MovieViewDetails({super.key, required this.movie});
+  const _MovieViewDetails({required this.movie});
 
   final Movie movie;
 
@@ -143,22 +154,79 @@ class _MovieViewDetails extends StatelessWidget {
           ),
         ),
         Padding(
-            padding: const EdgeInsets.all(8),
-            child: Wrap(
-              children: [
-                ...movie.genreIds.map((gender) => Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      child: Chip(
-                        label: Text(gender),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                      ),
-                    ))
-              ],
-            )),
-        const Gap(100),
-        const Placeholder(),
+          padding: const EdgeInsets.all(8),
+          child: Wrap(
+            children: [
+              ...movie.genreIds.map((gender) => Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    child: Chip(
+                      label: Text(gender),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                    ),
+                  ))
+            ],
+          ),
+        ),
+        _ActorsByMovie(movieId: movie.id.toString()),
       ],
+    );
+  }
+}
+
+class _ActorsByMovie extends ConsumerWidget {
+  const _ActorsByMovie({required this.movieId});
+
+  final String movieId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final actorsByMovie = ref.watch(actorsByMovieProvider);
+
+    if (actorsByMovie[movieId] == null) {
+      return const CircularProgressIndicator(
+        strokeWidth: 2,
+      );
+    }
+    final actors = actorsByMovie[movieId]!;
+    return SizedBox(
+      height: 300,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: actors.length,
+        itemBuilder: (context, index) {
+          final actor = actors[index];
+          return Container(
+            padding: const EdgeInsets.all(8),
+            width: 135,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FadeInRight(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      actor.profilePath,
+                      height: 180,
+                      width: 135,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const Gap(5),
+                Text(actor.name, maxLines: 2, overflow: TextOverflow.ellipsis),
+                Text(
+                  actor.character ?? "",
+                  maxLines: 1,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
