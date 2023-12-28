@@ -1,21 +1,17 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:movie_clean_arch/ui/config/helpers/human_formats.dart';
 
 import '../../../domain/entities/movie.dart';
 
 class MovieHorizontListView extends StatefulWidget {
   const MovieHorizontListView(
-      {super.key,
-      required this.movies,
-      this.title,
-      this.subTitle,
-      this.loadNextPage});
+      {super.key, required this.movies, this.title, this.loadNextPage});
 
   final List<Movie> movies;
   final String? title;
-  final String? subTitle;
   final VoidCallback? loadNextPage;
 
   @override
@@ -50,8 +46,7 @@ class _MovieHorizontListViewState extends State<MovieHorizontListView> {
       child: Column(
         children: [
           //* Заголовок
-          if (widget.title != null || widget.subTitle != null)
-            _Title(title: widget.title, subTitle: widget.subTitle),
+          if (widget.title != null) _Title(title: widget.title),
 
           //* Слайдер
           Expanded(
@@ -101,7 +96,11 @@ class _Slide extends StatelessWidget {
                     ),
                   );
                 }
-                return FadeIn(child: child);
+                return GestureDetector(
+                    onTap: () {
+                      context.push('/movie_details_screen/${movies.id}');
+                    },
+                    child: FadeIn(child: child));
               }),
             ),
           ),
@@ -151,7 +150,10 @@ class _Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.titleLarge;
+    final titleStyle = Theme.of(context)
+        .textTheme
+        .titleLarge
+        ?.copyWith(fontWeight: FontWeight.bold);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(

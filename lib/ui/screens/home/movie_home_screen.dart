@@ -65,28 +65,24 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                 MovieHorizontListView(
                     movies: nowPlayingMovies,
                     title: 'Сейчас в кино',
-                    subTitle: 'Смотрите сейчас',
                     loadNextPage: () {
                       ref.read(nowPlayingMoviesProvider.notifier).loadNexPage();
                     }),
                 MovieHorizontListView(
                     movies: popularMovies,
                     title: 'Популярные',
-                    subTitle: 'Смотрите сейчас',
                     loadNextPage: () {
                       ref.read(popularMoviesProvider.notifier).loadNexPage();
                     }),
                 MovieHorizontListView(
                     movies: upcomingMovies,
                     title: 'Предстоящие',
-                    subTitle: 'Смотрите сейчас',
                     loadNextPage: () {
                       ref.read(upcomingMoviesProvider.notifier).loadNexPage();
                     }),
                 MovieHorizontListView(
                     movies: topRatedMovies,
                     title: 'Высокий рейтинг',
-                    subTitle: 'Смотрите сейчас',
                     loadNextPage: () {
                       ref.read(topRatedMoviesProvider.notifier).loadNexPage();
                     }),
