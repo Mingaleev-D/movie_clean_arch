@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:movie_clean_arch/data/mappers/movie_mapper.dart';
+import 'package:movie_clean_arch/data/model/movie_details_response.dart';
 import 'package:movie_clean_arch/data/model/movie_response.dart';
 import 'package:movie_clean_arch/domain/entities/movie.dart';
 import 'package:movie_clean_arch/domain/usecase/movie_usecase.dart';
@@ -31,5 +32,31 @@ class MovieDBDatasource extends MovieUseCase {
     final response =
         await dio.get('movie/popular', queryParameters: {'page': page});
     return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Movie>> getTopRated({int page = 1}) async {
+    final response =
+        await dio.get('movie/top_rated', queryParameters: {'page': page});
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Movie>> getUpcoming({int page = 1}) async {
+    final response =
+        await dio.get('movie/upcoming', queryParameters: {'page': page});
+    return _jsonToMovies(response.data);
+  }
+
+  //*DetailById
+  @override
+  Future<Movie> getMovieById(String id) async {
+    final response = await dio.get('movie/$id');
+
+    if (response.statusCode != 200) throw Exception('Movie $id not found');
+    final moviesDetails = MovieDetailsResponse.fromJson(response.data);
+    final Movie movie =
+        MovieMapper.movieDetailsResponseToMovieEntity(moviesDetails);
+    return movie;
   }
 }
