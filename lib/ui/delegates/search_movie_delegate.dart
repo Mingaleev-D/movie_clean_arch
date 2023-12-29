@@ -51,7 +51,10 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
             itemCount: movies.length,
             itemBuilder: (context, index) {
               final movie = movies[index];
-              return _MovieSearchItem(movie: movie);
+              return _MovieSearchItem(
+                movie: movie,
+                onMovieSelected: close,
+              );
             });
       },
     );
@@ -59,59 +62,65 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
 }
 
 class _MovieSearchItem extends StatelessWidget {
-  const _MovieSearchItem({required this.movie});
+  const _MovieSearchItem({required this.movie, required this.onMovieSelected});
 
   final Movie movie;
+  final Function onMovieSelected;
 
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Row(
-        children: [
-          SizedBox(
-            width: size.width * 0.2,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                movie.posterPath,
-                loadingBuilder: (context, child, loadingProgress) =>
-                    FadeIn(child: child),
+    return GestureDetector(
+      onTap: () {
+        onMovieSelected(context, movie);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Row(
+          children: [
+            SizedBox(
+              width: size.width * 0.2,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  movie.posterPath,
+                  loadingBuilder: (context, child, loadingProgress) =>
+                      FadeIn(child: child),
+                ),
               ),
             ),
-          ),
-          const Gap(10),
-          SizedBox(
-            width: size.width * 0.7,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(movie.title, style: textStyle.titleMedium),
-                (movie.overview.length > 140)
-                    ? Text('${movie.overview.substring(0, 140)}...')
-                    : Text(movie.overview),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.star_half_outlined,
-                      color: Colors.yellow.shade800,
-                    ),
-                    const Gap(5),
-                    Text(
-                      HumanFormats.number(movie.voteAverage, 1),
-                      style: textStyle.bodyMedium?.copyWith(
+            const Gap(10),
+            SizedBox(
+              width: size.width * 0.7,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(movie.title, style: textStyle.titleMedium),
+                  (movie.overview.length > 140)
+                      ? Text('${movie.overview.substring(0, 140)}...')
+                      : Text(movie.overview),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.star_half_outlined,
                         color: Colors.yellow.shade800,
                       ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
+                      const Gap(5),
+                      Text(
+                        HumanFormats.number(movie.voteAverage, 1),
+                        style: textStyle.bodyMedium?.copyWith(
+                          color: Colors.yellow.shade800,
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
