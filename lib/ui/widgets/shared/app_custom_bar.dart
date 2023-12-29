@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:movie_clean_arch/domain/entities/movie.dart';
+import 'package:movie_clean_arch/ui/delegates/search_movie_delegate.dart';
+import '../../providers/providers.dart';
 
-class AppCustomBar extends StatelessWidget {
+class AppCustomBar extends ConsumerWidget {
   const AppCustomBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final titleStyle = Theme.of(context).textTheme.titleMedium;
     return SafeArea(
       bottom: false,
@@ -23,7 +28,22 @@ class AppCustomBar extends StatelessWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.search_outlined)),
+                    onPressed: () {
+                      final searchMovies = ref.read(searchMoviesProvider);
+                      final searchQuery = ref.read(searchQueryProvider);
+                      showSearch<Movie?>(
+                          query: searchQuery,
+                          context: context,
+                          delegate: SearchMovieDelegate(
+                              searchMovie: ref
+                                  .read(searchMoviesProvider.notifier)
+                                  .searchMoviesByQuery,
+                              initialMovies: [])).then((movie) {
+                        if (movie == null) return;
+                        context.push('/movie_details_screen/${movie.id}');
+                      });
+                    },
+                    icon: const Icon(Icons.search_outlined)),
               ],
             )),
       ),
