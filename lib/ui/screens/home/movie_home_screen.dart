@@ -1,32 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:movie_clean_arch/ui/screens/screens.dart';
 
 import '../../providers/providers.dart';
 import '../../widgets/widgets.dart';
 
 class MovieHomeScreen extends StatelessWidget {
-  const MovieHomeScreen({super.key});
+  const MovieHomeScreen({super.key, required this.pageIndex});
 
   static const homeMovieName = 'home_screen';
+  final int pageIndex;
+  final viewRoutes = const <Widget>[
+    HomeView(),
+    SizedBox(),
+    FavoriteScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: _HomeView(),
-      bottomNavigationBar: AppBottomNavigation(),
+    return Scaffold(
+      body: IndexedStack(
+        index: pageIndex,
+        children: viewRoutes,
+      ),
+      bottomNavigationBar: AppBottomNavigation(
+        currentIndex: pageIndex,
+      ),
     );
   }
 }
 
-class _HomeView extends ConsumerStatefulWidget {
-  const _HomeView();
+class HomeView extends ConsumerStatefulWidget {
+  const HomeView({super.key});
 
   @override
-  _HomeViewState createState() => _HomeViewState();
+  HomeViewState createState() => HomeViewState();
 }
 
-class _HomeViewState extends ConsumerState<_HomeView> {
+class HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
     super.initState();
