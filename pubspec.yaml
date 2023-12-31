@@ -19,12 +19,16 @@ dependencies:
   card_swiper: ^3.0.1
   animate_do: ^3.1.2
   intl: ^0.19.0
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^3.0.1
+  build_runner: ^2.4.7
+  isar_generator: ^3.1.0+1
 
 flutter:
   uses-material-design: true
