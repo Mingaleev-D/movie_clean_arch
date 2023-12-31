@@ -10,7 +10,6 @@
 ![4](https://github.com/Mingaleev-D/movie_clean_arch/assets/61611031/692d1b31-e867-492b-a3ac-07c1a9012640)
 ![5](https://github.com/Mingaleev-D/movie_clean_arch/assets/61611031/20587d40-b359-4aff-b278-366be85c7ecc)
 
-https://github.com/Mingaleev-D/movie_clean_arch/assets/61611031/e6d9b1f3-d68c-4eec-b046-ed93f884dade
 
 + Примечание.
   Я все больше практикуюсь используя Flutter🙂
