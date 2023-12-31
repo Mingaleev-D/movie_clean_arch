@@ -16,9 +16,9 @@ class AppBottomNavigation extends StatelessWidget {
       case 1:
         context.go('/home/1');
         break;
-      case 2:
-        context.go('/home/2');
-        break;
+      // case 2:
+      //   context.go('/home/2');
+      //   break;
     }
   }
 
@@ -30,7 +30,7 @@ class AppBottomNavigation extends StatelessWidget {
       onTap: (value) => onItemTapped(context, value),
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home_max_outlined), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.category_outlined), label: ''),
+        // BottomNavigationBarItem(icon: Icon(Icons.category_outlined), label: ''),
         BottomNavigationBarItem(
             icon: Icon(Icons.heart_broken_outlined), label: ''),
       ],
