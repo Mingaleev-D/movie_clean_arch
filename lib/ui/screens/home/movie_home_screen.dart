@@ -13,7 +13,7 @@ class MovieHomeScreen extends StatelessWidget {
   final int pageIndex;
   final viewRoutes = const <Widget>[
     HomeView(),
-    SizedBox(),
+    //  SizedBox(),
     FavoriteScreen(),
   ];
 

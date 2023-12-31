@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:movie_clean_arch/domain/entities/movie.dart';
 import 'package:movie_clean_arch/domain/usecase/local_storage_usecase.dart';
+import 'package:path_provider/path_provider.dart';
 
 class IsarDatasource extends LocalStorageUseCase {
   late Future<Isar> db;
@@ -11,8 +12,9 @@ class IsarDatasource extends LocalStorageUseCase {
 
   Future<Isar> openDB() async {
     if (Isar.instanceNames.isEmpty) {
-      return await Isar.open([MovieSchema],
-          inspector: true, directory: 'MovieDB');
+      var documentsDirectory = await getApplicationDocumentsDirectory();
+      var dbPath = documentsDirectory.path;
+      return await Isar.open([MovieSchema], directory: dbPath);
     }
     return Future.value(Isar.getInstance());
   }
