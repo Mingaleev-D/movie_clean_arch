@@ -1,16 +1,23 @@
-# movie_clean_arch
+## Description | Описание
 
-A new Flutter project.
++ Movie
++ + Тестовое приложение для отображения списков фильмов.
++ + Реализован поиск фильмов, добавления в избранные, просмотр информации о фильме
 
-## Getting Started
+![1](https://github.com/Mingaleev-D/movie_clean_arch/assets/61611031/55f3924d-6038-4158-b8fc-0bc083bb295d)
+![2](https://github.com/Mingaleev-D/movie_clean_arch/assets/61611031/ec077f6f-1683-4a0a-913b-5db1e55985c3)
+![3](https://github.com/Mingaleev-D/movie_clean_arch/assets/61611031/d681b16f-995f-4b43-986c-fc840dd492a7)
+![4](https://github.com/Mingaleev-D/movie_clean_arch/assets/61611031/692d1b31-e867-492b-a3ac-07c1a9012640)
+![5](https://github.com/Mingaleev-D/movie_clean_arch/assets/61611031/20587d40-b359-4aff-b278-366be85c7ecc)
 
-This project is a starting point for a Flutter application.
+https://github.com/Mingaleev-D/movie_clean_arch/assets/61611031/e6d9b1f3-d68c-4eec-b046-ed93f884dade
 
-A few resources to get you started if this is your first Flutter project:
++ Примечание.
+  Я все больше практикуюсь используя Flutter🙂
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Stack | Технологии
++ Flutter
++ go_router
++ Material Design
++ dio
++ Clean Architecture
